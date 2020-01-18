@@ -92,10 +92,23 @@
     navigator.mediaDevices
       .getUserMedia({video: true})
       .then(handleSuccess)
-
   
       $('#messages').click(function(e){
-        alert(e.target.id)
+      $('#messages').html('<h1>Loading</h1>')
+        $.ajax({
+          type: 'POST',
+          url:'',
+          data: {customer_number: e.target.id},
+          success:()=>{
+            alert('hello')
+            $('#messages').html('<p></p>')
+            addItems = [];
+            //console.log('success')
+          },
+          error:()=>{
+            console.log('errror')
+          }
+        })
       })
   </script>
 </body>

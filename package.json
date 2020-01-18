@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -p 4000"
+    "start": "node index"
   },
   "author": "Ryan Igo",
   "license": "ISC",
