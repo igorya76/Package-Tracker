@@ -10,7 +10,7 @@
 <body>
   <div id="container">
     <button id="click_event">test</button>
-    <video id="player" width="640" height="360" crossorigin="anonymous">
+    <video autoplay playsinline id="player" width="640" height="360" crossorigin="anonymous">
       <!-- <source src="./do-not-go-gentle.mp4" type="video/mp4"> -->
     </video>
     <div id="sep"></div>
@@ -29,15 +29,21 @@
       if (bold) {
         msg = `<p class="bold">${m}</p>`;
       }
+      //console.log({m})
       if(m.includes('ATT')){
         let cleansed = m.match(/\d+/g)
-        if(!addItems.includes(cleansed[0] || '')){
-          let msg = `<p id="${cleansed[0]}" class="account">Acct #: ${cleansed[0]}</p>`;
-          messages.innerHTML += msg;
-          addItems.push(cleansed[0]);
-          console.log(addItems)
+       // if(!addItems.includes(cleansed[0] || '')){
+          if(addItems.length === 5){
+            addItems.shift();
+            addItems.push(cleansed[0]);
+          }
+          let msg = addItems.map((item)=>{
+            return `<p id="${item}" class="account">Acct #: ${item}</p>`
+          })
+          console.log(msg)
+          $('.messages').html(msg)
 
-        }
+        //}
       }
       messages.scrollTop = messages.scrollHeight;
     }
