@@ -16,6 +16,7 @@
     <div id="sep"></div>
     <div id="messages">
     </div>
+
   </div>
   <script>
     const { createWorker, createScheduler } = Tesseract;
@@ -34,17 +35,19 @@
         let cleansed = m.match(/\d+/g)
        // if(!addItems.includes(cleansed[0] || '')){
          console.log(addItems.length)
+         let item = cleansed[0]
+         console.log(item)
+           
+            addItems.push(item);
+          
+          $('#messages').append(`<p id="${item}" class="account">Acct #: ${item}</p>`)
+          
           if(addItems.length === 5){
+            console.log('remove')
             addItems.shift();
-            addItems.push(cleansed[0]);
+            $('.account').first().remove()
           }
-          let msg = addItems.map((item)=>{
-            return `<p id="${item}" class="account">Acct #: ${item}</p>`
-          })
-          console.log(msg)
-          $('.messages').html(msg)
 
-        //}
       }
       messages.scrollTop = messages.scrollHeight;
     }
