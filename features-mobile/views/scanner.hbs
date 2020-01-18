@@ -33,11 +33,11 @@
         msg = `<p class="bold">${m}</p>`;
       }
       //console.log({m})
-      if(m.includes('ATT')){
+      //if(m.includes('ATT')){
         let cleansed = m.match(/\d+/g)
        // if(!addItems.includes(cleansed[0] || '')){
          console.log(addItems.length)
-         let item = cleansed[0]
+         let item = cleansed ? cleansed[0] : ''
          console.log(item)
            
             addItems.push(item);
@@ -50,7 +50,7 @@
             $('.account').first().remove()
           }
 
-      }
+      //}
       messages.scrollTop = messages.scrollHeight;
     }
 
