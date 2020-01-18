@@ -12,8 +12,9 @@ router.get('/scanner', async function(req,res){
   res.render(`${view}/scanner`);
 })
 
+const Package_Open = require('../../features-packages/server/package_reciept')
 router.post('/scanner', async function(req,res){
-  delay('30000')
+  let data = await Package_Open.log({customer_number: req.body.customer_number});
   console.log(req.body);
   res.json({'success': true})
 })
