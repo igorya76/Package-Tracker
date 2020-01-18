@@ -33,6 +33,7 @@
       if(m.includes('ATT')){
         let cleansed = m.match(/\d+/g)
        // if(!addItems.includes(cleansed[0] || '')){
+         console.log(addItems.length)
           if(addItems.length === 5){
             addItems.shift();
             addItems.push(cleansed[0]);
@@ -96,7 +97,7 @@
     player.onloadedmetadata = e => player.play();
   };
     navigator.mediaDevices
-      .getUserMedia({video: true})
+      .getUserMedia({video: {facingMode: 'environment'}})
       .then(handleSuccess)
   
       $('#messages').click(function(e){
