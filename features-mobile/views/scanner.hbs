@@ -34,18 +34,18 @@
       }
       //console.log({m})
       //if(m.includes('ATT')){
-        let cleansed = m.match(/\d+/g)
+       // let cleansed = m.match(/\d+/g)
        // if(!addItems.includes(cleansed[0] || '')){
-         console.log(addItems.length)
-         let item = cleansed ? cleansed[0] : ''
-         console.log(item)
+       //  console.log(addItems.length)
+         //let item = cleansed ? cleansed[0] : ''
+         //console.log(item)
            
-            addItems.push(item);
+            addItems.push(m);
           
-          $('#messages').append(`<p id="${item}" class="account">Acct #: ${item}</p>`)
+          $('#messages').append(`<p id="${m}" class="account">Acct #: ${m}</p>`)
           
           if(addItems.length === 5){
-            console.log('remove')
+         //   console.log('remove')
             addItems.shift();
             $('.account').first().remove()
           }
