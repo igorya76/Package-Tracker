@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src='https://unpkg.com/tesseract.js@v2.0.0-alpha.10/dist/tesseract.min.js'></script>
+    
+  </head>
+  <body>
+      <div>
+         <video id="videoele" style="width:375px; height: 200px;" autoplay playsinline></video>
+            <button class="btn btn-primary" style="text-align: center; width: 100%" type="button" id="btnele"><b>Run OCR</b></button>
+        <div style='position: relative; text-align: center'>
+          <img hidden id="imageele" src="" style="max-width: 400px; max-height: 200px;border: solid red 2px;">            
+          <div  id="ocr_status" style='position: absolute, top: 50%; left: 50%; '> </div>
+
+        </div>
+        <div id="ocr_results"> </div>
+      </div>
+
+      
+      <canvas id="canvasele" style="display:none;"></canvas>
+      
+      <script>
+          const constraints = {
+            video: {'facingMode':'environment',width: {min: 1280}, height: {min: 720}}
+          };        
+          const video = document.getElementById('videoele');
+          const img = document.getElementById('imageele');
+          const canvas = document.createElement('canvas');
+          const screenshotButton = document.getElementById('btnele');
+
+          function hasGetUserMedia() {
+            return !!(navigator.mediaDevices &&
+              navigator.mediaDevices.getUserMedia);
+          }
+
+          if (hasGetUserMedia()) {
+            // Good to go!
+              navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(handleError);
+
+          } else {
+            alert('getUserMedia() is not supported by your browser');
+          }      
+      
+          function gotStream(stream) {
+            window.stream = stream; // make stream available to console
+            video.srcObject = stream;
+          }
+
+          function handleError(error) {
+            console.log(error);
+          }
+
+          screenshotButton.onclick = video.onclick = function() {
+            document.getElementById("ocr_results").innerText = "";
+            img.hidden = false;
+            video.hidden = true;
+            screenshotButton.hidden = true;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            // Other browsers will fall back to image/png
+            img.src = canvas.toDataURL('image/png');
+            runOCR(img.src);
+          };    
+
+          function runOCR(url) {
+            
+            const worker = new Tesseract.TesseractWorker();
+            worker.recognize(url)
+                .then(function(result) {
+                    document.getElementById("ocr_results")
+                        
+                            .innerHTML = `<button id=${textValidation(result)}>Att: ${textValidation(result)}</button>`
+                            video.hidden = false;
+                            img.hidden = true;
+                            screenshotButton.hidden = false;
+                }).progress(function(result) {
+                    document.getElementById("ocr_status")
+                            .innerText = result["status"] + " (" +
+                                (result["progress"] * 100) + "%)";
+                });
+          }         
+
+          function textValidation(m){
+            //Contains Att:
+            let text = m.text.toLowerCase();
+            console.log({text})
+            if(text.includes('att')){
+              let attStart = text.indexOf('att');
+              let sample = text.slice(attStart, attStart +10);
+              let cleansed = sample.match(/\d+/g)
+              console.log({cleansed})
+              if(cleansed){
+                return cleansed[0];
+              }
+            }
+            return null
+          }
+      
+   $('#ocr_results').click(function(e){
+     screenshotButton.hidden = true
+        $.ajax({
+          type: 'POST',
+          url:'',
+          data: {customer_number: e.target.id},
+          success:()=>{
+              screenshotButton.hidden = false 
+              document.getElementById("ocr_results").innerHTML = ''
+          },
+          error:()=>{
+            console.log('errror')
+          }
+        })
+      })
+      </script>
+  </body>
+</html>

@@ -9,7 +9,7 @@ router.get('/', async function(req,res){
   res.render(`${view}/home`)
 })
 router.get('/scanner', async function(req,res){
-  res.render(`${view}/scanner`);
+  res.render(`${view}/scanner2`);
 })
 
 const Package_Open = require('../../features-packages/server/package_reciept')
